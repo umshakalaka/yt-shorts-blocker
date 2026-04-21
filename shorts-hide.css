@@ -30,10 +30,6 @@ yt-chip-cloud-chip-renderer:has([title="Shorts"]) {
   display: none !important;
 }
 
-ytd-item-section-renderer:has(ytd-reel-shelf-renderer) {
-  display: none !important;
-}
-
 ytd-grid-video-renderer:has(a[href*="/shorts/"]),
 ytd-rich-grid-row:has(ytd-rich-item-renderer a[href*="/shorts/"]) {
   display: none !important;

@@ -22,8 +22,6 @@
     
     'yt-chip-cloud-chip-renderer:has([title="Shorts"])',
     
-    'ytd-item-section-renderer:has(ytd-reel-shelf-renderer)',
-    
     'ytd-shorts',
     'ytd-shorts-player-container',
   ];
@@ -36,7 +34,7 @@
 
     
     const parent = el.closest(
-      'ytd-item-section-renderer, ytd-rich-section-renderer, ytd-shelf-renderer'
+      'ytd-rich-section-renderer, ytd-shelf-renderer'
     );
     if (parent && !parent.dataset.shortsBlocked) {
       parent.dataset.shortsBlocked = '1';
@@ -69,7 +67,13 @@
   sweep();
 
   
-  const observer = new MutationObserver(() => sweep());
+  let sweepTimer = null;
+  function debouncedSweep() {
+    if (sweepTimer) return;
+    sweepTimer = setTimeout(() => { sweepTimer = null; sweep(); }, 150);
+  }
+
+  const observer = new MutationObserver(debouncedSweep);
   observer.observe(document.documentElement, {
     childList: true,
     subtree: true,
@@ -77,7 +81,5 @@
 
   
   window.addEventListener('yt-navigate-finish', sweep);
-  window.addEventListener('popstate', () => {
-    setTimeout(sweep, 300); 
-  });
+  window.addEventListener('popstate', () => { setTimeout(sweep, 300); });
 })();
